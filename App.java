@@ -6,7 +6,8 @@ import java.util.HashMap;
 
 public class App {
     public static void main(String[] args) {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(System.in));
         // 0 = Member, 1 = Warehouse, 2 = Transactions
         HashMap<String, IRecord>[] database = new HashMap[3];
         database[0] = new HashMap<>();
@@ -43,11 +44,13 @@ public class App {
             } catch (IOException e) {
             }
         }
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++) {
             System.out.println(database[i]);
+        }
     }
 
-    public static void AddRecord(BufferedReader in, HashMap<String, IRecord>[] database) throws IOException {
+    public static void AddRecord(BufferedReader in,
+            HashMap<String, IRecord>[] database) throws IOException {
         System.out.println("What type of record would you like to add?");
         System.out.println("0 : Member");
         System.out.println("1 : Warehouse");
@@ -63,38 +66,207 @@ public class App {
                 break;
             case "2":
                 Transaction transaction = new Transaction(in);
-                database[2].put(String.valueOf(transaction.InventoryId) + String.valueOf(transaction.UserId), transaction);
+                database[2].put(
+                        String.valueOf(transaction.InventoryId)
+                                + String.valueOf(transaction.UserId),
+                        transaction);
                 break;
             default:
                 break;
         }
     }
 
-    public static void UpdateRecord(BufferedReader in, HashMap<String, IRecord>[] database) {
-        /*
-        TODO
-        Prompt user
-        Switch -> prompt user for key
-            database[i].get(key).edit(in);
-        * */
+    public static void UpdateRecord(BufferedReader in,
+            HashMap<String, IRecord>[] database) throws IOException {
+        System.out.println("What record would you like to modify?");
+        System.out.println("0 : Member");
+        System.out.println("1 : Warehouse");
+        System.out.println("2 : Transaction");
+        String currRecordModifyIndex = in.readLine();
+        switch (currRecordModifyIndex) {
+            case "0":
+                System.out.println("Which member do you want to modify by ID?");
+                System.out.println(
+                        database[Integer.parseInt(currRecordModifyIndex)]);
+                int change = in.read();
+                if (database[Integer.parseInt(currRecordModifyIndex)]
+                        .containsKey(String.valueOf(change))) {
+                    Member member = new Member(in);
+                    if (member.Id == change) {
+                        database[0].replace(String.valueOf(change), member);
+                    } else {
+                        System.out.println("Please enter a valid key");
+                    }
+                } else {
+                    System.out.println("Please enter a valid id");
+                }
+                break;
+            case "1":
+                System.out.println(
+                        "Which warehouse do you want to modify by address?");
+                System.out.println(
+                        database[Integer.parseInt(currRecordModifyIndex)]);
+                String changeWare = in.readLine();
+                if (database[Integer.parseInt(currRecordModifyIndex)]
+                        .containsKey(changeWare)) {
+                    Warehouse warehouse = new Warehouse(in);
+                    if (warehouse.Address == changeWare) {
+                        database[0].replace(String.valueOf(changeWare),
+                                warehouse);
+                    } else {
+                        System.out.println("Please enter a valid address");
+                    }
+                } else {
+                    System.out.println("Please enter a valid address");
+                }
+                break;
+            case "2":
+
+                System.out.println(
+                        database[Integer.parseInt(currRecordModifyIndex)]);
+                System.out.println(
+                        "Which transaction do you want to modify by inventory ID?");
+                String invenId = in.readLine();
+                System.out.println(
+                        "Which transaction do you want to modify by user ID?");
+                String userId = in.readLine();
+                String fullId = invenId + userId;
+                if (database[Integer.parseInt(currRecordModifyIndex)]
+                        .containsKey(fullId)) {
+                    Transaction transaction = new Transaction(in);
+                    if ((String.valueOf(transaction.InventoryId)
+                            + String.valueOf(transaction.UserId) == fullId)) {
+                        database[0].replace(String.valueOf(fullId),
+                                transaction);
+                    } else {
+                        System.out.println("Please enter valid ids");
+                    }
+                } else {
+                    System.out.println("Please enter valid ids");
+                }
+                break;
+            default:
+                break;
+        }
+
     }
 
-    public static void DeleteRecord(BufferedReader in, HashMap<String, IRecord>[] database) {
-        /*
-        TODO
-        Prompt user
-        Switch -> prompt user for key
-            database[i].get(key).edit(in);
-        * */
+    public static void DeleteRecord(BufferedReader in,
+            HashMap<String, IRecord>[] database) throws IOException {
+        System.out.println("From which category would you like to delete?");
+        System.out.println("0 : Member");
+        System.out.println("1 : Warehouse");
+        System.out.println("2 : Transaction");
+        String currRecordModifyIndex = in.readLine();
+        switch (currRecordModifyIndex) {
+            case "0":
+                System.out.println("Which member do you want to delete by ID?");
+                System.out.println(
+                        database[Integer.parseInt(currRecordModifyIndex)]);
+                int change = in.read();
+                if (database[Integer.parseInt(currRecordModifyIndex)]
+                        .containsKey(String.valueOf(change))) {
+                    database[Integer.parseInt(currRecordModifyIndex)]
+                            .remove(String.valueOf(change));
+                } else {
+                    System.out.println("Please enter a valid id");
+                }
+                break;
+            case "1":
+                System.out.println(
+                        "Which warehouse do you want to delete by address?");
+                System.out.println(
+                        database[Integer.parseInt(currRecordModifyIndex)]);
+                String changeWare = in.readLine();
+                if (database[Integer.parseInt(currRecordModifyIndex)]
+                        .containsKey(changeWare)) {
+                    database[Integer.parseInt(currRecordModifyIndex)]
+                            .remove(changeWare);
+                } else {
+                    System.out.println("Please enter a valid address");
+                }
+                break;
+            case "2":
+
+                System.out.println(
+                        database[Integer.parseInt(currRecordModifyIndex)]);
+                System.out.println(
+                        "Which transaction do you want to delete by inventory ID?");
+                String invenId = in.readLine();
+                System.out.println(
+                        "Which transaction do you want to delete by user ID?");
+                String userId = in.readLine();
+                String fullId = invenId + userId;
+                if (database[Integer.parseInt(currRecordModifyIndex)]
+                        .containsKey(fullId)) {
+                    database[Integer.parseInt(currRecordModifyIndex)]
+                            .remove(fullId);
+                } else {
+                    System.out.println("Please enter valid ids");
+                }
+                break;
+            default:
+                break;
+        }
     }
 
-    public static void SearchRecord(BufferedReader in, HashMap<String, IRecord>[] database) {
-    /*
-        TODO
-        Prompt user
-        Switch -> prompt user for key
-            database[i].get(key).toString();
-        * */
+    public static void SearchRecord(BufferedReader in,
+            HashMap<String, IRecord>[] database) throws IOException {
+        System.out.println("From which category would you like to search?");
+        System.out.println("0 : Member");
+        System.out.println("1 : Warehouse");
+        System.out.println("2 : Transaction");
+        String currRecordModifyIndex = in.readLine();
+        switch (currRecordModifyIndex) {
+            case "0":
+                System.out.println("Which member do you want to search by ID?");
+                System.out.println(
+                        database[Integer.parseInt(currRecordModifyIndex)]);
+                int change = in.read();
+                if (database[Integer.parseInt(currRecordModifyIndex)]
+                        .containsKey(String.valueOf(change))) {
+                    database[Integer.parseInt(currRecordModifyIndex)]
+                            .get(String.valueOf(change)).toString();
+                } else {
+                    System.out.println("Please enter a valid id");
+                }
+                break;
+            case "1":
+                System.out.println(
+                        "Which warehouse do you want to search by address?");
+                System.out.println(
+                        database[Integer.parseInt(currRecordModifyIndex)]);
+                String changeWare = in.readLine();
+                if (database[Integer.parseInt(currRecordModifyIndex)]
+                        .containsKey(changeWare)) {
+                    database[Integer.parseInt(currRecordModifyIndex)]
+                            .get(changeWare).toString();
+                } else {
+                    System.out.println("Please enter a valid address");
+                }
+                break;
+            case "2":
+
+                System.out.println(
+                        database[Integer.parseInt(currRecordModifyIndex)]);
+                System.out.println(
+                        "Which transaction do you want to search by inventory ID?");
+                String invenId = in.readLine();
+                System.out.println(
+                        "Which transaction do you want to search by user ID?");
+                String userId = in.readLine();
+                String fullId = invenId + userId;
+                if (database[Integer.parseInt(currRecordModifyIndex)]
+                        .containsKey(fullId)) {
+                    database[Integer.parseInt(currRecordModifyIndex)]
+                            .get(fullId).toString();
+                } else {
+                    System.out.println("Please enter valid ids");
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -114,33 +286,39 @@ class Member implements IRecord {
 
     public Member(BufferedReader in) {
         try {
-            edit(in);
+            this.edit(in);
         } catch (IOException e) {
         }
         ;
     }
 
+    @Override
     public void edit(BufferedReader in) throws IOException {
         System.out.println("Modifying Member: ");
         System.out.println("Id:");
-        Id = Integer.parseInt(in.readLine());
+        this.Id = Integer.parseInt(in.readLine());
         System.out.println("Warehouse Address:");
-        WarehouseAddress = in.readLine();
+        this.WarehouseAddress = in.readLine();
         System.out.println("Phone Number:");
-        PhoneNumber = Long.parseLong(in.readLine());
+        this.PhoneNumber = Long.parseLong(in.readLine());
         System.out.println("Start Date:");
-        StartDate = in.readLine();
+        this.StartDate = in.readLine();
         System.out.println("Address:");
-        Address = in.readLine();
+        this.Address = in.readLine();
         System.out.println("Email:");
-        Email = in.readLine();
+        this.Email = in.readLine();
         System.out.println("First Name:");
-        FirstName = in.readLine();
+        this.FirstName = in.readLine();
         System.out.println("Last Name");
-        LastName = in.readLine();
+        this.LastName = in.readLine();
     }
-    public String toString(){
-        return "("+Id+","+WarehouseAddress+","+PhoneNumber+","+StartDate+","+Address+","+Email+","+FirstName+","+LastName+")";
+
+    @Override
+    public String toString() {
+        return "(" + this.Id + "," + this.WarehouseAddress + ","
+                + this.PhoneNumber + "," + this.StartDate + "," + this.Address
+                + "," + this.Email + "," + this.FirstName + "," + this.LastName
+                + ")";
     }
 }
 
@@ -154,34 +332,41 @@ class Warehouse implements IRecord {
 
     public Warehouse(BufferedReader in) {
         try {
-            edit(in);
+            this.edit(in);
         } catch (IOException e) {
         }
         ;
     }
 
+    @Override
     public void edit(BufferedReader in) throws IOException {
         System.out.println("Modifying Warehouse ");
         System.out.println("Warehouse Address:");
-        Address = in.readLine();
+        this.Address = in.readLine();
         System.out.println("Storage Capacity:");
-        StorageCapacity = Integer.parseInt(in.readLine());
+        this.StorageCapacity = Integer.parseInt(in.readLine());
         System.out.println("Drone Capacity:");
-        DroneCapacity = Integer.parseInt(in.readLine());
+        this.DroneCapacity = Integer.parseInt(in.readLine());
         System.out.println("Phone Number:");
-        PhoneNumber = Long.parseLong(in.readLine());
+        this.PhoneNumber = Long.parseLong(in.readLine());
         System.out.println("Manager Name:");
-        ManagerName = in.readLine();
+        this.ManagerName = in.readLine();
         System.out.println("City:");
-        City = in.readLine();
+        this.City = in.readLine();
     }
-    public String toString(){
-        return "("+Address+","+StorageCapacity+","+DroneCapacity+","+PhoneNumber+","+ManagerName+","+City+")";
+
+    @Override
+    public String toString() {
+        return "(" + this.Address + "," + this.StorageCapacity + ","
+                + this.DroneCapacity + "," + this.PhoneNumber + ","
+                + this.ManagerName + "," + this.City + ")";
     }
 }
 
 class Transaction implements IRecord {
-    enum Status {RENTED, RETURNED, Other;}
+    enum Status {
+        RENTED, RETURNED, Other;
+    }
 
     public long InventoryId;
     public long UserId;
@@ -191,36 +376,41 @@ class Transaction implements IRecord {
 
     public Transaction(BufferedReader in) {
         try {
-            edit(in);
+            this.edit(in);
         } catch (IOException e) {
         }
         ;
     }
 
+    @Override
     public void edit(BufferedReader in) throws IOException {
         System.out.println("Modifying Transaction ");
         System.out.println("Inventory Id:");
-        InventoryId = Long.parseLong(in.readLine());
+        this.InventoryId = Long.parseLong(in.readLine());
         System.out.println("User Id:");
-        UserId = Long.parseLong(in.readLine());
+        this.UserId = Long.parseLong(in.readLine());
         System.out.println("Order Date:");
-        OrderDate = in.readLine();
+        this.OrderDate = in.readLine();
         System.out.println("Fee:");
-        Fee = Float.parseFloat(in.readLine());
-        System.out.println("Equipment Status: 0 = Rented, 1 = Returned, default = Other");
+        this.Fee = Float.parseFloat(in.readLine());
+        System.out.println(
+                "Equipment Status: 0 = Rented, 1 = Returned, default = Other");
         switch (in.readLine()) {
             case "0":
-                EquipmentStatus = Status.RENTED;
+                this.EquipmentStatus = Status.RENTED;
                 break;
             case "1":
-                EquipmentStatus = Status.RETURNED;
+                this.EquipmentStatus = Status.RETURNED;
                 break;
             default:
-                EquipmentStatus = Status.Other;
+                this.EquipmentStatus = Status.Other;
                 break;
         }
     }
-    public String toString(){
-        return "("+InventoryId+","+UserId+","+OrderDate+","+Fee+","+EquipmentStatus+")";
+
+    @Override
+    public String toString() {
+        return "(" + this.InventoryId + "," + this.UserId + "," + this.OrderDate
+                + "," + this.Fee + "," + this.EquipmentStatus + ")";
     }
 }

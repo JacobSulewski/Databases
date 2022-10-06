@@ -1,2 +1,8 @@
 # Project exclude paths
 /out/
+/App.class
+/IRecord.class
+/Member.class
+/Transaction$Status.class
+/Transaction.class
+/Warehouse.class

@@ -88,7 +88,7 @@ public class App {
                 System.out.println("Which member do you want to modify by ID?");
                 System.out.println(
                         database[Integer.parseInt(currRecordModifyIndex)]);
-                int change = in.read();
+                int change = Integer.parseInt(in.readLine());
                 if (database[Integer.parseInt(currRecordModifyIndex)]
                         .containsKey(String.valueOf(change))) {
                     Member member = new Member(in);
@@ -163,7 +163,7 @@ public class App {
                 System.out.println("Which member do you want to delete by ID?");
                 System.out.println(
                         database[Integer.parseInt(currRecordModifyIndex)]);
-                int change = in.read();
+                int change = Integer.parseInt(in.readLine());
                 if (database[Integer.parseInt(currRecordModifyIndex)]
                         .containsKey(String.valueOf(change))) {
                     database[Integer.parseInt(currRecordModifyIndex)]
@@ -222,11 +222,12 @@ public class App {
                 System.out.println("Which member do you want to search by ID?");
                 System.out.println(
                         database[Integer.parseInt(currRecordModifyIndex)]);
-                int change = in.read();
+                int change = Integer.parseInt(in.readLine());
                 if (database[Integer.parseInt(currRecordModifyIndex)]
                         .containsKey(String.valueOf(change))) {
-                    database[Integer.parseInt(currRecordModifyIndex)]
-                            .get(String.valueOf(change)).toString();
+                    System.out.println(
+                            database[Integer.parseInt(currRecordModifyIndex)]
+                                    .get(String.valueOf(change)).toString());
                 } else {
                     System.out.println("Please enter a valid id");
                 }
@@ -239,8 +240,9 @@ public class App {
                 String changeWare = in.readLine();
                 if (database[Integer.parseInt(currRecordModifyIndex)]
                         .containsKey(changeWare)) {
-                    database[Integer.parseInt(currRecordModifyIndex)]
-                            .get(changeWare).toString();
+                    System.out.println(
+                            database[Integer.parseInt(currRecordModifyIndex)]
+                                    .get(changeWare).toString());
                 } else {
                     System.out.println("Please enter a valid address");
                 }
@@ -258,8 +260,9 @@ public class App {
                 String fullId = invenId + userId;
                 if (database[Integer.parseInt(currRecordModifyIndex)]
                         .containsKey(fullId)) {
-                    database[Integer.parseInt(currRecordModifyIndex)]
-                            .get(fullId).toString();
+                    System.out.println(
+                            database[Integer.parseInt(currRecordModifyIndex)]
+                                    .get(fullId).toString());
                 } else {
                     System.out.println("Please enter valid ids");
                 }
